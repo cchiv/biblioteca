@@ -1,0 +1,43 @@
+.btn{
+    border-radius:10px;
+    margin: 1px;
+    width: 200px;
+    text-align: center;
+}
+    
+.btn-primary{
+    background-color: rgb(236, 214, 14);    
+    border-color: darkorange;
+}
+
+.prestitiBtn{
+    background-color: rgb(236, 214, 14);    
+    border-color: darkorange;
+    width: 80px;    
+    position: center;
+}
+
+.formGroup{
+    margin: 10px;
+}
+
+.formMain{
+    text-align: center;
+}
+
+#header{
+    margin-top: 30px;
+}
+
+.table{
+    margin-top: 20px;
+}
+
+#table-rent{
+    margin-top: 0px;
+    width: 100%;
+}
+
+.modal.show{
+    display: block;
+}

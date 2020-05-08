@@ -1,0 +1,85 @@
+<app-navbar (emitUserSurname)="searchSurname($event)" ></app-navbar>
+<div  class="col-md-12 text-center" id="header">
+    <button class="btn btn-primary btn-lg" (click)="showListOrInputForm(false)"> <i class="fa fa-user-plus" aria-hidden="true"></i> Inserisci utente </button>
+    <button class="btn btn-primary btn-lg" (click)="showListOrInputForm(true)"> <i class="fa fa-users" aria-hidden="true"></i>Lista utenti </button>
+</div>
+
+<form [formGroup]="formInput" class="formMain" *ngIf="!isFormInputViewActive" (submit)="sendUser($event)">
+    <div class="formGroup">
+        <label for="nome" class="col-sm-2 col-form-label"> Nome </label>
+        <input type="text" formControlName="nome" placeholder="nome">
+    </div>    
+    <div class="formGroup">
+        <label for="cognome" class="col-sm-2 col-form-label"> Cognome </label>
+        <input type="text" formControlName="cognome" placeholder="congome">
+    </div>
+    <div class="formGroup">
+        <label for="residenza" class="col-sm-2 col-form-label"> Residenza </label>
+        <input type="text" formControlName="residenza" placeholder="città di residenza">
+    </div>
+    <button type="submit" class="btn btn-primary" [disabled]="formInput.invalid" *ngIf="isNewInsert"> <i class="fa fa-floppy-o" aria-hidden="true"></i> Inserisci utente</button>
+    <button type="submit" class="btn btn-primary" [disabled]="formInput.invalid" *ngIf="!isNewInsert"> Modifica utente</button>
+</form>
+
+<div class="container">
+<table class="table" *ngIf="isFormInputViewActive">
+    <thead>
+      <tr>
+        <th scope="col">Nome</th>
+        <th scope="col">Cognome</th>
+        <th scope="col">Residenza</th>
+        <th scope="col">Rimuovi</th>
+        <th scope="col">Modifica</th>
+        <th scope="col">Libri disponibili</th>
+        <th scope="col">Prestiti</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users" (click)="setActive(user)" >
+        <td>{{user.nome}}</td>
+        <td>{{user.cognome}}</td>
+        <td>{{user.residenza}}</td>
+        <td > <i (click)="delete(user.id)" class="fa fa-user-times" aria-hidden="true"></i></td>
+        <td> <i (click)="edit(user)" class="fa fa-edit icon"> </i></td>
+        <td><select>
+          <option *ngFor="let book of libriDisponibili, index as i"> {{book.titolo}}</option>
+        </select></td>
+        <td><button *ngIf="user.libro.length!=0"  type="button" class="btn prestitiBtn" data-toggle="modal" data-target="#myModal" (click)="showModal=true">Prestiti</button></td>
+      </tr>
+    </tbody>
+</table>
+</div>
+
+<div class="modal fade" id="exampleModalCenter" [ngClass]="{'show': showModal}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Libri presi in prestito</h5>
+      </div>
+      <div class="modal-body">
+          <table class="table table-striped" *ngIf="isFormInputViewActive" id="table-rent">
+            <thead>
+              <tr>
+                <th scope="col">Titolo</th>
+                <th scope="col">Autore</th>
+                <th scope="col">Editore</th>
+                <th scope="col">Data prestito</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let libro of libriInPrestito" >
+                <td>{{libro.titolo}}</td>
+                <td>{{libro.autore}}</td>
+                <td>{{libro.editore}}</td>
+                <td>{{libro.inizioPrestito | date:'longDate'}}</td>
+              </tr>
+            </tbody>
+          </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="showModal=false">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+

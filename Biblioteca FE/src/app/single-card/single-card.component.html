@@ -1,0 +1,12 @@
+<div class="card " style="width: 12rem;" [style.color]="book.disponibile == false ? 'red' : 'lightgreen' ">
+    <img class="card-img-top" src="../../assets/biblioteca-gladstone.jpg" alt="Card image cap">
+    <div class="card-body">
+        <h5 class="card-title" >{{book.titolo}}</h5>
+        <p class="card-text">{{book.genere}}</p>
+        <i (click)="delete(book.id)" class="btn btn-primary fa fa-trash icon"> </i>
+        <i (click)="edit(book)" class="btn btn-primary fa fa-edit icon"> </i>
+        <i (click)="whoHasIt(book)" class="btn btn-primary fa fa-info icon" *ngIf="book.disponibile === false"> </i>
+        <i (click)="rent(book)" class="btn btn-primary fa fa-dot-circle-o" *ngIf="book.disponibile === true"> </i>
+        <i (click)="consegna(book)" class="btn btn-primary fa fa-inbox icon"  *ngIf="book.disponibile === false"> </i>
+    </div>
+</div>

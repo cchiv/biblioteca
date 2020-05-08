@@ -1,0 +1,26 @@
+.btn{
+    border-radius:10px;
+    margin: 1px;
+    width: 40px;
+    text-align: center;
+}
+
+.btn-primary{
+    background-color: rgb(236, 214, 14);    
+    border-color: darkorange;
+}
+
+.card{
+    margin-top: 2px;
+    margin: 10px;
+    border-radius: 10px;
+    border: solid;
+}
+
+.card-title{
+    color: gray;
+}
+
+.card-text{
+    color: grey;
+}

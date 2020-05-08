@@ -1,0 +1,122 @@
+<app-navbar (emitTitleBook)="searchTitle($event)"></app-navbar>
+<div  class="col-md-12 text-center" id="header" >
+    <button class="btn btn-primary btn-lg" (click)="showListOrInputForm(false, true)" > Inserisci libro </button>
+    <button class="btn btn-primary btn-lg" (click)="showListOrInputForm(true, false)" > Lista libri </button>
+</div>
+
+<form [formGroup]="formInput" class="formMain" *ngIf="!switchListInsert"  (submit)="sendBook($event)" >
+    <div class="formGroup">
+        <label for="ISBN" class="col-sm-2 col-form-label"> ISBN </label>
+        <input type="text" formControlName="isbn" placeholder="ISBN">
+    </div>    
+    <div class="formGroup">
+        <label for="titolo" class="col-sm-2 col-form-label"> Titolo </label>
+        <input type="text" formControlName="titolo" placeholder="Titolo">
+    </div>
+    <div class="formGroup">
+        <label for="autore" class="col-sm-2 col-form-label"> Autore </label>
+        <input type="text" formControlName="autore" placeholder="Autore">
+    </div>
+    <div class="formGroup">
+        <label for="editore" class="col-sm-2 col-form-label"> Editore </label>
+        <input type="text" formControlName="editore" placeholder="Editore">
+    </div>
+    <div class="formGroup">
+        <label for="genere" class="col-sm-2 col-form-label"> Genere </label>
+        <input type="text" formControlName="genere" placeholder="Genere">
+    </div>
+    <button type="submit" class="btn btn-primary" [disabled]="formInput.invalid" *ngIf="switcInsertModifyBook"> Inserisci Libro </button>
+    <button type="submit" class="btn btn-primary" [disabled]="formInput.invalid" *ngIf="!switcInsertModifyBook" > Modifica Libro </button>
+</form>
+
+<div class="container" *ngIf="switchListInsert">
+    <div class="row">
+        <div *ngFor="let book of books">
+            <app-single-card [book]="book" (emitBook)="receiveBookFunc($event)"  (emitBookForWhoHasIt)="recereceiveBookForWhiHasIt($event)" (emitBookForRent)="recivedForRent($event)" (emitBookConsegna)="restituzione($event)" *ngIf="!switcInsertModifyBook"></app-single-card>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModalCenter" [ngClass]="{'show': showModal}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h6 class="modal-title" id="exampleModalLongTitle">Assegna ad utente</h6>
+        </div>
+        <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                      <div class="col-sm">
+                        <label >Libro:</label>
+                      </div>
+                      <div class="col-sm">
+                        {{receiveBookRent?.titolo}}
+                      </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm">
+                            <label >Utente:</label>
+                        </div>
+                        <div class="col-sm">
+                            <select [(ngModel)]="selectedIdUser" id="selectRent">
+                                <option *ngFor="let user of users" [value]="user.id"> {{user.cognome}} {{user.nome}}</option>
+                            </select> 
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm">
+                            <label>Data:</label>
+                        </div>
+                        <div class="col-sm">
+                            <input [(ngModel)]="startRent" type="date" id="start" value="startRent">
+                        </div>
+                    </div>
+                </div>        
+        </div>
+        <div class="modal-footer">
+          <button id="modalBtnChiudi" type="button" class="btn btn-primary" data-dismiss="modal" (click)="showModal=false">Chiudi</button>
+          <button id="modalBtnConferma" type="button" class="btn btn-primary" data-dismiss="modal" (click)="confermaPrestito(selectedIdUser)" (click)="showModal=false" >Conferma</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModalCenter" [ngClass]="{'show': showModalWhoHasIt}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h6 class="modal-title" id="exampleModalLongTitle">Prestiti</h6>
+        </div>
+        <div class="modal-body">
+            <div *ngIf="switchListInsert" >
+                <table class="tableWhoHas">
+                    <thead>
+                        <tr>
+                            <th scope="col">Nome</th>
+                            <th scope="col">Cognome</th>
+                            <th scope="col">Residenza</th>
+                            <th scope="col">Titolo</th>
+                            <th scope="col">Data inizio prestito</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>{{whoHasTheBook?.nome}}</td>
+                        <td>{{whoHasTheBook?.cognome}}</td>
+                        <td>{{whoHasTheBook?.residenza}}</td>
+                        <td>{{receiveBookWhoHas?.titolo}}</td>
+                        <td>{{receiveBookWhoHas?.inizioPrestito | date:'longDate'}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button id="modalBtnChiudi" type="button" class="btn btn-primary" data-dismiss="modal" (click)="showModalWhoHasIt=false">Chiudi</button>
+          <button id="modalBtnConferma" type="button" class="btn btn-primary" data-dismiss="modal" (click)="confermaPrestito(selectedIdUser)" (click)="showModalWhoHasIt=false" >Conferma</button>
+        </div>
+      </div>
+    </div>
+</div>
